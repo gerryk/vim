@@ -1,0 +1,33 @@
+[submodule "bundle/pydoc"]
+	path = bundle/pydoc
+	url = https://github.com/fs111/pydoc.vim.git
+[submodule "bundle/surround"]
+	path = bundle/surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "bundle/git"]
+	path = bundle/git
+	url = https://github.com/tpope/vim-git.git
+[submodule "bundle/supertab"]
+	path = bundle/supertab
+	url = https://github.com/ervandew/supertab.git
+[submodule "bundle/py.test"]
+	path = bundle/py.test
+	url = https://github.com/alfredodeza/pytest.vim.git
+[submodule "bundle/makegreen"]
+	path = bundle/makegreen
+	url = https://github.com/reinh/vim-makegreen
+[submodule "bundle/tasklist"]
+	path = bundle/tasklist
+	url = https://github.com/vim-scripts/TaskList.vim.git
+[submodule "pyflakes-pathogen"]
+	path = pyflakes-pathogen
+	url = https://github.com/mitechie/pyflakes-pathogen.git
+[submodule "bundle/pyflakes"]
+	path = bundle/pyflakes
+	url = https://github.com/mitechie/pyflakes-pathogen.git
+[submodule "bundle/pep8"]
+	path = bundle/pep8
+	url = https://github.com/vim-scripts/pep8.git
+[submodule "bundle/syntastic"]
+	path = bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
