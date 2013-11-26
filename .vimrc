@@ -1,5 +1,4 @@
 set nocompatible
-source $VIMRUNTIME/vimrc_example.vim
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
 
@@ -64,6 +63,11 @@ set foldlevel=99
 
 if has("gui_running")
 	set guifont=Droid\ Sans\ Mono\ 13
+=======
+
+
+if has("gui_running")
+	set guifont=Droid_Sans_Mono:h11
 	"set guioptions-=m  "remove menu bar
     nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
     inoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
@@ -102,6 +106,8 @@ vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 syntax on
 
 "set background=dark
+=======
+set background=dark
 
 if has("autocmd")
     filetype plugin on
@@ -209,6 +215,9 @@ nmap <F8> :TagbarToggle<CR>
 " Tasklist keybindings
 
 map T :TaskList<CR>
+=======
+map P :TlistToggle<CR>
+
 
 " ************************************************************************
 " A B B R E V I A T I O N S 
@@ -274,5 +283,4 @@ function! UpdateTimeStamp()
  endif
  endfunction
 endif
-
 
