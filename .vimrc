@@ -1,11 +1,38 @@
+" ************************************************************************
 set nocompatible
+filetype off
+set fileformats=unix,dos,mac
+set viminfo=
+" Windows Stuff
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
 
-call pathogen#incubate()
-call pathogen#helptags()
+" Pathogen Bundle Manager
+"call pathogen#incubate()
+"call pathogen#helptags()
 
+" ************************************************************************
+" Vundle Bundle Manager
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+" Let Vundle manage Vundle
+" Required!
+Bundle 'gmarik/vundle'
+" Additional Bundles
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bundings/vim/'}
+Bundle 'tpope/vim-fugitive'
+Bundle 'scrooloose/nerdtree'
+Bundle 'klen/python-mode'
+Bundle 'davidhalter/jedi-vim'
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+Bundle 'vim-scripts/closetag.vim'
+Bundle 'fholgado/minibufexpl.vim'
+" Optional for snipmate:
+Bundle "honza/vim-snippets"
 
+" ************************************************************************
 set diffexpr=MyDiff()
 function MyDiff()
   let opt = '-a --binary '
@@ -31,42 +58,74 @@ function MyDiff()
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
-set nocompatible 
+" ************************************************************************
+" Settings
+
+" Tabs and indents
+set autoindent                  " set the cursor at same indent as line above
+set smartindent                 " try to be smart about indenting (C-style)
+set expandtab                   " expand <Tab>s with spaces; death to tabs!
+set shiftwidth=4                " spaces for each step of (auto)indent
+set softtabstop=4               " set virtual tab stop (compat for 8-wide tabs)
+set tabstop=8                   " for proper display of files with tabs
+set shiftround                  " always round indents to multiple of shiftwidth
+set copyindent                  " use existing indents for new indents
+set preserveindent              " save as much indent structure as possible
+filetype plugin indent on       " load filetype plugins and indent settings
+
+" Text editing and searching
+set nohlsearch                  " turn off highlighting for searched expressions
+set incsearch                   " highlight as we search however
+set matchtime=5                 " blink matching chars for .x seconds
+"set mouse=a                     " try to use a mouse in the console (wimp!)
+set ignorecase                  " set case insensitivity
+set smartcase                   " unless there's a capital letter
+set completeopt=menu,longest,preview " more autocomplete <Ctrl>-P options
+set nostartofline               " leave my cursor position alone!
+set backspace=2                 " equiv to :set backspace=indent,eol,start
+set textwidth=80                " we like 80 columns
+set showmatch                   " show matching brackets
+set formatoptions=tcrql         
+
 set ls=2
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
 set nowrap
 set backspace=indent,eol,start 
-set autoindent 
 set hlsearch
 set incsearch
 set number
 set showmatch
-set ignorecase
-"set noignorecase
 set title
 set cmdheight=2
 set ttyfast
+set lazyredraw
+set scrolloff=5
 " set linebreak " Don't wrap words by default
 set textwidth=0 
 " set nobackup 
 set viminfo='20,\"50 
-set history=50 " 
+set history=500
 set ruler 
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
 set wildmenu
-"set wildmode=list:longest,full
+set wildmode=list:longest,full
 set foldmethod=indent
 set foldlevel=99
+set autochdir
+set background=dark
+syntax on
+colorscheme lucius
+set showcmd 
+set autowrite 
+set noerrorbells
+set report=0
+set visualbell
 
 if has("gui_running")
 	set guifont=Droid_Sans_Mono:h11
 	"set guioptions-=m  "remove menu bar
 	set guifont=Droid\ Sans\ Mono\ 13
-    nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
-    inoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
+        nnoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
+        " inoremap <C-F1> :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
 	set guioptions-=T  "remove toolbar
 	set guioptions-=r  "remove right-hand scroll bar
 	set lines=40
@@ -76,6 +135,15 @@ if has("gui_running")
 else
 	"
 endif
+
+" ************************************************************************
+" Key bindings
+" Toggle Whitespace display
+nmap <leader>l :set list!<CR>
+
+map <F3> :sp ~/.vim/gerryhelp<CR>
+
+vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 " Disable arrows to force use of hjkl
 
@@ -90,19 +158,16 @@ endif
 "nnoremap j gj
 "nnoremap k gk
 
-
+" ************************************************************************
+" Terminal Colour Settings 
 if &term =~ "xterm-debian" || &term =~ "xterm-xfree86" || &term =~ "xterm"
   set t_Co=16
   set t_Sf=[3%dm
   set t_Sb=[4%dm
 endif
 
-vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
-
-syntax on
-
-set background=dark
-
+" ************************************************************************
+" Auto commands
 if has("autocmd")
     filetype plugin on
     filetype indent on
@@ -131,7 +196,8 @@ if has("autocmd")
     au BufNewFile,BufRead  *.pls    set syntax=dosini
     au BufNewFile,BufRead  modprobe.conf    set syntax=modconf
     " Ctrl+X O
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
+    " Don't use Omnicomplete for Python... we use Python-Mode istead
+    " autocmd FileType python set omnifunc=pythoncomplete#Complete
     autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
     autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -139,9 +205,9 @@ if has("autocmd")
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c set omnifunc=ccomplete#Complete
     autocmd FileType php noremap <C-L> :!php -l %<CR>
-    autocmd Filetype html,xml,xsl source ~/.vim/closetag.vim
-    autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class 
-	autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``	
+    autocmd Filetype html,xml,xsl source ~/.vim/bundle/closetag.vim/plugin/closetag.vim
+    " autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class 
+	" autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``	
 
     " Make Sure that Vim returns to the same line when we reopen a file"
     augroup line_return
@@ -152,13 +218,22 @@ if has("autocmd")
         \ endif
     augroup END
     
+    augroup vimrc_autocmds
+        autocmd!
+        " Highlightaracters after column 80 (Python PEP8)
+        autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
+        autocmd FileType python match Excess /\%80v.*/
+        autocmd FileType python set nowrap
+        augroup END
+
+    augroup filetype
+        au BufRead reportbug.* set ft=mail
+        au BufRead reportbug-* set ft=mail
+        augroup END
+
 endif " has ("autocmd")
 
-augroup filetype
-  au BufRead reportbug.* set ft=mail
-  au BufRead reportbug-* set ft=mail
-augroup END
-
+" ************************************************************************
 try
   if filereadable('/etc/papersize')
     let s:papersize = matchstr(system('/bin/cat /etc/papersize'), '\p*')
@@ -170,16 +245,54 @@ try
 catch /E145/
 endtry
 
-set showcmd 
-set showmatch 
-set autowrite 
+" ************************************************************************
+" Plugin Settings "
+" Powerline Setup
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
+set laststatus=2
 
-colorscheme lucius
+" Python-mode
+" Activate rope
+" Keys:
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 0
 
-" ========== Plugin Settings =========="
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = ["pep8","pyflakes"]
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_key = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
 
 " wildmenu options
-
 set wildignore+=.hg,.git,.svn " Version Controls"
 set wildignore+=*.aux,*.out,*.toc "Latex Indermediate files"
 set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg "Binary Imgs"
@@ -193,13 +306,33 @@ set wildignore+=*.pyc "Python Object codes"
 set wildignore+=*.orig "Merge resolution files"
 
 " Mapping to NERDTree
-nnoremap <C-n> :NERDTreeToggle<cr>
+nnoremap <F2> :NERDTreeToggle<cr>
+"nnoremap <C-n> :NERDTreeToggle<cr>
 
-" Mini Buffer some settigns."
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
-let g:miniBufExplModSelTarget = 1
+" Mini Buffer some settigns." (Deprecated)
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs = 1
+"let g:miniBufExplModSelTarget = 1
+"
+" New MiniBufExplorer settings
+nmap <F4> :MBEToggle<CR>
+noremap <C-TAB> :MBEbn<CR>
+noremap <C-S-TAB> :MBEbp<CR>
+noremap <M-.> :MBEbn<CR>
+noremap <M-,> :MBEbp<CR>
+" Hack for Putty
+noremap <ESC>[B  <C-W>j
+noremap <ESC>[A  <C-W>k
+noremap <ESC>[D  <C-W>h
+noremap <ESC>[C  <C-W>l
+" Standard Arrow Keys
+noremap <C-Down>  <C-W>j
+noremap <C-Up>    <C-W>k
+noremap <C-Left>  <C-W>h
+noremap <C-Right> <C-W>l
+
+map <F5> :Bs
 
 " Tagbar key bindings."
 "nmap <leader>l <ESC>:TagbarToggle<cr>
@@ -207,15 +340,12 @@ let g:miniBufExplModSelTarget = 1
 nmap <F8> :TagbarToggle<CR> 
 
 " Tasklist keybindings
-
 map T :TaskList<CR>
 map P :TlistToggle<CR>
 
 
 " ************************************************************************
 " A B B R E V I A T I O N S 
-
-"
 
 abbr #b /************************************************************************
 abbr #e  ************************************************************************/
@@ -239,12 +369,8 @@ iab YTS <C-R>=TimeStamp()<CR>
 
 iab YDATETIME <c-r>=strftime(": %a %b %d, %Y %H:%M:%S %Z")<cr>
 
-
-
 " ************************************************************************
 "  F U N C T I O N S
-
-"
 
 " first add a function that returns a time stamp in the desired format 
 if !exists("*TimeStamp")
@@ -276,4 +402,34 @@ function! UpdateTimeStamp()
  endif
  endfunction
 endif
+
+function! BufSel(pattern)
+    let bufcount = bufnr("$")
+    let currbufnr = 1
+    let nummatches = 0
+    let firstmatchingbufnr = 0
+    while currbufnr <= bufcount
+        if(bufexists(currbufnr))
+            let currbufname = bufname(currbufnr)
+            if(match(currbufname, a:pattern) > -1)
+                echo currbufnr . ": ". bufname(currbufnr)
+                let nummatches += 1
+                let firstmatchingbufnr = currbufnr
+            endif
+        endif
+        let currbufnr = currbufnr + 1
+    endwhile
+    if(nummatches == 1)
+        execute ":buffer ". firstmatchingbufnr
+    elseif(nummatches > 1)
+        let desiredbufnr = input("Enter buffer number: ")
+        if(strlen(desiredbufnr) != 0)
+            execute ":buffer ". desiredbufnr
+        endif
+    else
+    	echo "No matching buffers"
+    endif
+endfunction
+
+command! -nargs=1 Bs :call BufSel("<args>")
 

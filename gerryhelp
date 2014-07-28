@@ -1,0 +1,27 @@
+                              Gerry's vim help                                !
+
+-- MiniBufExplorer --                        -- Python Mode  --
+
+F4            - Toggle Buffer Explorer       K             - Documentation     
+CTRL-TAB      - Cycle Buffers                \b            - Toggle Breakpoint
+CTRL-<arrows> - Next/Prev Buffer             [[            - Previous Class
+CTRL-W w      - Switch Windows               ]]            - Next Class
+                                             [M            - Previous Method
+                                             ]M            - Next Method
+
+-- Jedi-vim --
+
+CTRL-Space    - Completion 
+/g            - Goto assignments 
+/d            - Goto definitions
+K             - Show Documentation
+/r            - Renaming
+/n            - Show all usages 
+:Pyimport <module>
+
+-- Miscellaneous --
+
+\l            - Show Whitespace
+F3            - This Help File
+F2            - Toggle NerdTree
+
