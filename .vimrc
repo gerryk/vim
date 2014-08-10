@@ -292,6 +292,8 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 " Don't autofold code
 let g:pymode_folding = 0
 
+let g:pymode_indent = 1
+
 " wildmenu options
 set wildignore+=.hg,.git,.svn " Version Controls"
 set wildignore+=*.aux,*.out,*.toc "Latex Indermediate files"
