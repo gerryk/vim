@@ -173,7 +173,6 @@ if has("autocmd")
     filetype indent on
     " Restore cursor position
     au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
-
     " Filetypes (au = autocmd)
     au FileType helpfile set nonumber      " no line numbers when viewing help
     au FileType helpfile nnoremap <buffer><cr> <c-]>   " Enter selects subject
@@ -187,7 +186,7 @@ if has("autocmd")
     set pastetoggle=<C-p>
     set showmode
     "au FileType cpp,c,java,sh,pl,php,phtml,asp  set cindent
-    "au BufRead mutt*[0-9] set tw=72
+    au BufRead mutt*[0-9] set tw=72
     " Automatically chmod +x Shell and Perl scripts
     "au BufWritePost   *.sh             !chmod +x %
     "au BufWritePost   *.pl             !chmod +x %
