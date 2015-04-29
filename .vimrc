@@ -31,6 +31,7 @@ Bundle 'vim-scripts/closetag.vim'
 Bundle 'fholgado/minibufexpl.vim'
 " Optional for snipmate:
 Bundle "honza/vim-snippets"
+Bundle "tclem/vim-arduino"
 
 " ************************************************************************
 set diffexpr=MyDiff()
@@ -191,6 +192,8 @@ if has("autocmd")
     "au BufWritePost   *.sh             !chmod +x %
     "au BufWritePost   *.pl             !chmod +x %
     " File formats
+    au BufRead,BufNewFile *.pde set filetype=arduino
+    au BufRead,BufNewFile *.ino set filetype=arduino
     au BufNewFile,BufRead  *.phtml  set syntax=php
     au BufNewFile,BufRead  *.pls    set syntax=dosini
     au BufNewFile,BufRead  modprobe.conf    set syntax=modconf
@@ -316,6 +319,12 @@ nnoremap <F2> :NERDTreeToggle<cr>
 "let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplModSelTarget = 1
 "
+
+" Key mappings for global & local search/replace - refactor renames.
+" For local replace
+nnoremap gr gd[{V%::s/<C-R>///gc<left><left><left>
+" " For global replace
+ nnoremap gR gD:%s/<C-R>///gc<left><left><left>
 " New MiniBufExplorer settings
 nmap <F4> :MBEToggle<CR>
 noremap <C-TAB> :MBEbn<CR>
