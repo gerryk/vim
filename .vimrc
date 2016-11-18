@@ -15,7 +15,7 @@ set viminfo=
 
 " ************************************************************************
 " Vundle Bundle Manager
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 " Let Vundle manage Vundle
 " Required!
