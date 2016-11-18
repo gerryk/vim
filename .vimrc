@@ -1,4 +1,6 @@
 " ************************************************************************
+set exrc
+set secure
 set nocompatible
 filetype off
 set fileformats=unix,dos,mac
@@ -17,7 +19,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 " Let Vundle manage Vundle
 " Required!
-Bundle 'gmarik/vundle'
+Bundle 'VundleVim/Vundle.vim'
 " Additional Bundles
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bundings/vim/'}
 Bundle 'tpope/vim-fugitive'
@@ -32,6 +34,10 @@ Bundle 'fholgado/minibufexpl.vim'
 " Optional for snipmate:
 Bundle "honza/vim-snippets"
 Bundle "tclem/vim-arduino"
+" Text doc stuff
+Bundle "jceb/vim-orgmode"
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 
 " ************************************************************************
 set diffexpr=MyDiff()
@@ -115,11 +121,15 @@ set autochdir
 set background=dark
 syntax on
 colorscheme lucius
+set colorcolumn=110
+highlight ColorColumn ctermbg=darkgrey
 set showcmd 
 set autowrite 
 set noerrorbells
 set report=0
 set visualbell
+
+set makeprg=make\ -C\ ../build\ -j9
 
 if has("gui_running")
 	set guifont=Droid_Sans_Mono:h11
@@ -206,6 +216,7 @@ if has("autocmd")
     autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c set omnifunc=ccomplete#Complete
+    autocmd FileType cpp set omnifunc=ccomplete#Complete
     autocmd FileType php noremap <C-L> :!php -l %<CR>
     autocmd Filetype html,xml,xsl source ~/.vim/bundle/closetag.vim/plugin/closetag.vim
     " autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class 
@@ -226,12 +237,17 @@ if has("autocmd")
         autocmd FileType python highlight Excess ctermbg=DarkGrey guibg=Black
         autocmd FileType python match Excess /\%80v.*/
         autocmd FileType python set nowrap
-        augroup END
+    augroup END
 
     augroup filetype
         au BufRead reportbug.* set ft=mail
         au BufRead reportbug-* set ft=mail
-        augroup END
+    augroup END
+
+    augroup project
+        autocmd!
+        autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
+    augroup END
 
 endif " has ("autocmd")
 
